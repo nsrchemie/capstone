@@ -1,0 +1,63 @@
+* {
+	margin:0;
+	padding:0;
+
+}
+body {
+	background-color:#043131;
+}
+div.contain {
+	float:right;
+
+/*	margin-right:50em;*/
+/*	width:30em;*/
+	display:inline-block;
+	overflow: scroll;
+	height:50em;
+	width:30em;
+}
+div.sitings {
+	width:28.125em;
+	padding:.625em;
+	border: .312em outset #4c614e;
+/*	outline-width: 10%;*/
+/*	border-left-width:300px;*/
+	margin:.625em;
+	position:right;
+	left:70%;
+	background-color: #5C755E;
+	color:white;
+}
+div.sitings a{
+	color:#c8f7c5;
+}
+#show_form {
+/*	display:inline-block;*/
+}
+#addition_form {
+	top:2em;
+	background-color: #0AC66D;
+	width:28.125em;
+	display:block;
+	float:right;
+}
+div.Phytoheader {
+	background-color: #0BC67C;
+	display:inline-block;
+	width:100%;
+	border-bottom-style:groove;
+	border-bottom:thick;
+}
+h1.headtitle {
+	color:white;
+	margin-left: .6em;
+	font-size: 22px;
+	margin-bottom:.9em;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+#map {
+	width: 86.37em;
+	height:57em;
+	margin-top: .8em;
+	box-shadow: 3px 3px 10px 5px #000;
+}

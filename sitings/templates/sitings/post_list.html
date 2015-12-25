@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
+    </script>
+
+<!--    // <script type="text/javascript" src="/static/post_list.js"></script> -->
+<!--    // <script src="/static/post_list.js"></script> -->
+    <title>Simple Leaflet Map</title>
+    <meta charset="utf-8" />
+    <link 
+        rel="stylesheet" 
+        href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
+
+
+    <link href="/static/post_list.css" rel="stylesheet">
+</head>
+    <body>
+
+        <div class="Phytoheader">
+            <h1 class="headtitle">Phytomap</h1>
+        </div>
+        <div class="contain">
+        {% for post in posts %}
+            <div class ="sitings">
+                
+                <h1><a href="">{{ post.title }}</a></h1>
+                <p>{{ post.text|linebreaks }}</p>
+                <h4>{{post.description}}</h4>
+                <img src={{ post.picture.url }} height="200px" width="320px" border="1px"/><p>published: {{ post.published_date }}</p>
+            </div>
+        {% endfor %}
+        </div>
+            <div id="map"></div>
+                <button id="show_form" class="btn-primary">Add a new siting!</button>
+                    <form id ='addition_form' method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {{form.as_p}}
+                        <input type="submit" value="Submit" />
+                    </form>
+
+    </body>
+
+    <script>
+$(document).ready(function(){
+    /* When the document loads, hide the form to submit a new plant siting
+    */
+    $('#addition_form').hide();
+
+
+
+$('#show_form').click(function(){
+    /* After clicking the button to add a new siting, display the form */
+
+    $("#addition_form").toggle()
+
+    function addMarker(e){
+    /* When clicking on the map add a new marker, retrieve it's Latitude and Longitude
+    and insert the values into the Location input field of the form, after 
+    clicking the off method will not allow the Addmarker function to be reused until the Submit
+    button is clicked again*/
+    var newMarker = new L.marker(e.latlng).addTo(map).getLatLng();
+    $('#id_location').val(newMarker.lat + ',' + newMarker.lng);
+    $('#show_form').off("click"); //TODO: Only allow one map marker addition per session
+
+
+
+};
+map.on('click', addMarker);
+});
+    /* Set default settings for the map, including the area to load over, the initial zoom setting and sets a maximum zoom level (this is important as
+    the api requires much more data above zoom level 18 and the terms of Leaflet request that you don't exceed 18 for server usage reasons)*/
+
+        var portland = [45.5200, -122.6819]
+        var defaultzoom = 8
+        var map = L.map('map').setView(portland, defaultzoom);
+        var newMarker;
+        mapLink = 
+            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 18,
+            }).addTo(map);
+{% for post in posts %}
+    /* Loop through each model object and retrieve the latitude and longitude coordinates and
+    use those in placing a new marker on the map corresponding to each model object.
+    When hovering over the markers display the Title/Name of the plant and upon clicking the marker
+    allow a pop-up that shows the picture corresponding to the marker */
+
+        marker = new L.marker([{{post.location}}],
+            {title : "{{post.title}}"})
+            .bindPopup("<img src={{post.picture.url}} height='200' width='280'>")
+            .addTo(map);
+{% endfor %}
+
+});
+    </script>
+</html>
