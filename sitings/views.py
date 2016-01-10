@@ -30,13 +30,16 @@ def post_detail(request, pk):
     decoded_data = BS_data.decode('utf-8')
     cleaned_data = decoded_data.split('<td>\n')
     number_cleaner = re.compile("^\+?(\d+-?)*\d+$")
+    chem_raw = []
+    chems = []
     for chem in cleaned_data:
         if '|' in chem:
             # if not number_cleaner.match(chem):
-            x = chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1]
-            x = x.encode('ascii','ignore').decode('utf-8', 'replace')
-            try:
-                return render(request, 'sitings/post_detail.html', {'post': post, 'x': x.split()})
-            except:
-                pass
+            chem_raw.append(chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].encode('ascii','replace').decode('utf-8', 'ignore'))
+            # for value in chem_raw:
+            #     if number_cleaner.match(chem):
+            #         chems.remove(value)
+    return render(request, 'sitings/post_detail.html', {'post': post, 'chems':chem_raw})
+            # except:
+            #     pass``
     # return render(request, 'sitings/post_detail.html', {'post': post, 'x': x})
