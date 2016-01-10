@@ -6,7 +6,7 @@
     </script>
 
 <!--    // <script type="text/javascript" src="/static/post_list.js"></script> -->
-<!--    // <script src="/static/post_list.js"></script> -->
+   <script src="/static/post_list.js"></script>
     <title>Simple Leaflet Map</title>
     <meta charset="utf-8" />
     <link 
@@ -34,7 +34,7 @@
         {% for post in posts %}
             <div class ="sitings">
                 
-                <h1><a href="">{{ post.title }}</a></h1>
+                <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
                 <p>{{ post.text|linebreaks }}</p>
                 <h4>{{post.description}}</h4>
                 <img src={{ post.picture.url }} height="200px" width="320px" border="1px"/><p>published: {{ post.published_date }}</p>
@@ -52,7 +52,7 @@
 
     </body>
 
-    <script>
+<script>
 $(document).ready(function(){
     /* When the document loads, hide the form to submit a new plant siting
     */
@@ -79,7 +79,7 @@ $('#show_form').click(function(){
 };
 map.on('click', addMarker);
 });
-    /* Set default settings for the map, including the area to load over, the initial zoom setting and sets a maximum zoom level (this is important as
+   /*  Set default settings for the map, including the area to load over, the initial zoom setting and sets a maximum zoom level (this is important as
     the api requires much more data above zoom level 18 and the terms of Leaflet request that you don't exceed 18 for server usage reasons)*/
 
         var portland = [45.5200, -122.6819]
