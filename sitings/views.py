@@ -29,17 +29,36 @@ def post_detail(request, pk):
     BS_data = BeautifulSoup(plant_data, "lxml")
     decoded_data = BS_data.decode('utf-8')
     cleaned_data = decoded_data.split('<td>\n')
-    number_cleaner = re.compile("/^(\d+-?)+\d+$/")
+    number_cleaner = "^\+?(\d+-?)*\d+$"
     chem_raw = []
     chems = []
+    flavanoids = ('one','in',)
+    flavanoid_count = 0
+    terpenes = ('sterol', 'ene', 'ol','en','enin',)
+    terpene_count = 0
+    amines = ('ine',)
+    amine_count = 0
+    acids = ('acid','saeure',)
+    acid_count = 0
+    glycoside_count = 0
+
     for chem in cleaned_data:
         if '|' in chem:
-            # if not number_cleaner.match(chem):
-            chem_raw.append(chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].encode('ascii','replace').decode('utf-8', 'ignore'))
+            chem_raw.append(chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].
+            encode('ascii','replace').decode('utf-8', 'ignore'))
     for value in chem_raw:
-        if not re.match("^\+?(\d+-?)*\d+$", value):
+        if not re.match(number_cleaner, value):
             chems.append(value)
-    return render(request, 'sitings/post_detail.html', {'post': post, 'chems':chems})
-            # except:
-            #     pass``
-    # return render(request, 'sitings/post_detail.html', {'post': post, 'x': x})
+    for compound in chems:
+        if compound.endswith(flavanoids):
+            flavanoid_count += 1
+        elif compound.endswith(terpenes):
+            terpene_count += 1
+        elif compound.endswith(amines):
+            amine_count += 1
+        elif compound[:-2].endswith('side') or compound.endswith('side'):
+            glycoside_count += 1
+
+    return render(request, 'sitings/post_detail.html', {'post': post, 'chems':chems, 
+    'flavanoid_count':flavanoid_count, 'terpene_count':terpene_count, 'amine_count':amine_count, 'acid_count':acid_count,
+    'glycoside_count':glycoside_count})
