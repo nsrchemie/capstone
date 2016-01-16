@@ -13,6 +13,23 @@
 <ul>{% for chem in chems %}
 <li>{{ chem }}</li>
 {% endfor %}
+
+<p>Of the compounds isolated from this plant:</p> 
+{% if flavanoid_count != 0 %}
+<p>{{ flavanoid_count }} are flavanoids</p>
+{% endif %}
+{% if terpene_count != 0 %}
+<p>{{ terpene_count }} are terpenes </p>
+{% endif %}
+{% if amine_count != 0 %}
+<p>{{ amine_count }} are amines </p>
+{% endif %}
+{% if glycoside_count != 0 %}
+<p>{{ glycoside_count }} are glycosides</p>
+{% endif %}
+{% if acid_count != 0 %}
+<p>{{ acid_count }} are acids</p>
+{% endif %}
 </ul>
 
 
