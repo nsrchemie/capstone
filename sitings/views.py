@@ -61,14 +61,6 @@ def post_detail(request, pk):
         if compound.endswith(acids):
             acid_count += 1
 
-    compound_count = [flavanoid_count, terpene_count, glycoside_count, amine_count, acid_count]
-    flavanoid_ratio = flavanoid_count * (360/sum(compound_count))
-    terpene_ratio = terpene_count * (360/sum(compound_count))
-    glycoside_ratio = glycoside_count * (360/sum(compound_count))
-    amine_ratio = amine_count * (360/sum(compound_count))
-    acid_ratio = acid_count * (360/sum(compound_count))
-
     return render(request, 'sitings/post_detail.html', {'post': post, 'chems':chems, 
     'flavanoid_count':flavanoid_count, 'terpene_count':terpene_count, 'amine_count':amine_count,
-    'acid_count':acid_count, 'glycoside_count':glycoside_count, 'flavanoid_ratio':flavanoid_ratio,
-    'terpene_ratio':terpene_ratio, 'glycoside_ratio':glycoside_ratio, 'acid_ratio':acid_ratio, 'amine_ratio':amine_ratio})
+    'acid_count':acid_count, 'glycoside_count':glycoside_count})
