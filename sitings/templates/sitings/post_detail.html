@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 <body>
 <div class="post">
         {% if post.published_date %}
@@ -31,6 +34,49 @@
 <p>{{ acid_count }} are acids</p>
 {% endif %}
 </ul>
+<canvas id='chem_chart' width='256' height='256'>
+<script>
+$(document).ready(function() {
+	var ctx = $("#chem_chart").get(0).getContext("2d");
+
+	var data = [
+	{
+		value: {{flavanoid_ratio}},
+		color: "cornflowerblue",
+		highlight: "lightskyblue",
+		label: "Flavanoids"
+	},
+	{
+		value: {{terpene_ratio}},
+		color: "lightgreen",
+		highlight: "yellowgreen",
+		label: "Terpenes"
+	},
+	{
+		value: {{amine_ratio}},
+		color: "orange",
+		highlight: "darkorange",
+		label: "Amines"
+	},
+	{
+		value: {{glycoside_ratio}},
+		color: "#F7464A",
+		highlight: "FF5A5E",
+		label: "Glycosides"
+	},
+	{	
+		value: {{acid_ratio}},
+		color: "#46BFBD",
+		highlight: "5AD3D1",
+		label: "Acids"
+	}
+
+	];
+
+	//draw
+	var piechart = new Chart(ctx).Pie(data);
+});
+</script>
 
 
 </body>
