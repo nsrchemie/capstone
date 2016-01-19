@@ -29,8 +29,8 @@
 <div class='breakdown'>
 <div class='chemlist'>
 <h3>Of the compounds isolated from this plant:</h3> 
-{% if flavanoid_count != 0 %}
-<p>{{ flavanoid_count }} are flavanoids</p>
+{% if flavonoid_count != 0 %}
+<p>{{ flavonoid_count }} are flavonoids</p>
 {% endif %}
 {% if terpene_count != 0 %}
 <p>{{ terpene_count }} are terpenes </p>
@@ -51,14 +51,16 @@
 </div>
 <script>
 $(document).ready(function() {
+	/* When the page loads all other content, feed the count values of 
+	parsed phytochemicals and display them in a pie chart*/
 	var ctx = $("#chem_chart").get(0).getContext("2d");
 
 	var data = [
 	{
-		value: {{flavanoid_count}},
+		value: {{flavonoid_count}},
 		color: "cornflowerblue",
 		highlight: "lightskyblue",
-		label: "Flavanoids"
+		label: "Flavonoids"
 	},
 	{
 		value: {{terpene_count}},

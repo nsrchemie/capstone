@@ -42,8 +42,8 @@ def post_detail(request, pk):
     number_cleaner = "^\+?(\d+-?)*\d+$" #Regex to remove extraneous numbers (e.g. 23-5124-1251)
     chem_raw = []
     chems = []
-    flavanoids = ('one','in',)
-    flavanoid_count = 0
+    flavonoids = ('one','in',)
+    flavonoid_count = 0
     terpenes = ('sterol', 'ene', 'ol','en','enin',)
     terpene_count = 0
     amines = ('ine',)
@@ -64,8 +64,8 @@ def post_detail(request, pk):
         if not re.match(number_cleaner, value): #Remove strings composed of only numbers and dashes
             chems.append(value)
     for compound in chems: # Check the suffixes and count occurrences
-        if compound.endswith(flavanoids):
-            flavanoid_count += 1
+        if compound.endswith(flavonoids):
+            flavonoid_count += 1
         elif compound.endswith(terpenes):
             terpene_count += 1
         elif compound.endswith(amines):
@@ -75,6 +75,6 @@ def post_detail(request, pk):
         if compound.endswith(acids):
             acid_count += 1
 
-    return render(request, 'sitings/post_detail.html', {'post': post, 'chems':chems, 
-    'flavanoid_count':flavanoid_count, 'terpene_count':terpene_count, 'amine_count':amine_count,
+    return render(request, 'sitings/post_detail.html', {'post': post, 'chems':sorted(chems), 
+    'flavonoid_count':flavonoid_count, 'terpene_count':terpene_count, 'amine_count':amine_count,
     'acid_count':acid_count, 'glycoside_count':glycoside_count})
