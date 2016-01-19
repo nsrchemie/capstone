@@ -7,6 +7,10 @@ from bs4 import BeautifulSoup
 import re
 
 def post_list(request):
+    """
+    A function that retrieves and returns plant siting posts information ordered by decreasing published date.  
+    For the submission form in the page if a POST request is detected, save the inputted information and return it to the database.
+    Otherwise, render an empty form"""
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 
     if request.method == "POST":
@@ -22,14 +26,20 @@ def post_list(request):
     return render(request, 'sitings/post_list.html', {'posts': posts, 'form':form})
 
 def post_detail(request, pk):
+    """ After clicking a plant siting on the main page send the plant name to a natural products database, 
+    scrape the contents and return chemicals found in the plant/mushroom.  Count the chemicals according 
+    to chemical structure by checking suffixes
+    and send the count of compounds to the page to be displayed
+
+    """
     post = get_object_or_404(Post,pk=pk)
     url = 'http://pkuxxj.pku.edu.cn/UNPD/print_fz_zwln.php'
-    r = requests.post(url, data={'fangji':str(post)})
+    r = requests.post(url, data={'fangji':str(post)}) #Insert the plant name into the input box
     plant_data = r.content
     BS_data = BeautifulSoup(plant_data, "lxml")
-    decoded_data = BS_data.decode('utf-8')
+    decoded_data = BS_data.decode('utf-8') #Convert from bytes to string
     cleaned_data = decoded_data.split('<td>\n')
-    number_cleaner = "^\+?(\d+-?)*\d+$"
+    number_cleaner = "^\+?(\d+-?)*\d+$" #Regex to remove extraneous numbers (e.g. 23-5124-1251)
     chem_raw = []
     chems = []
     flavanoids = ('one','in',)
@@ -45,11 +55,15 @@ def post_detail(request, pk):
     for chem in cleaned_data:
         if '|' in chem:
             chem_raw.append(chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].
-            encode('ascii','replace').decode('utf-8', 'ignore'))
+            encode('ascii','replace').decode('utf-8', 'ignore')) #identify tr elements containing chemicals by the presence of |
+            # The | is used to separate chemical synonyms and only one name is wanted so the last one is retrieved
+            # Example: compounds = 'Bicyclo[3.1.1.]hept-2-ene,2,6,6-trimethyl | 2-Pinene' ---> result = '2-Pinene'
+            # Stray html tags also have to be removed and the encoding and decoding is to avoid the script breaking when greek unicode
+            #characters are in a compound (e.g. β-Sitosterol)
     for value in chem_raw:
-        if not re.match(number_cleaner, value):
+        if not re.match(number_cleaner, value): #Remove strings composed of only numbers and dashes
             chems.append(value)
-    for compound in chems:
+    for compound in chems: # Check the suffixes and count occurrences
         if compound.endswith(flavanoids):
             flavanoid_count += 1
         elif compound.endswith(terpenes):

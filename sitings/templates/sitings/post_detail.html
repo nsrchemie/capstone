@@ -19,14 +19,15 @@
         <p>{{ post.description|linebreaks }}</p>
     </div>
 <div class="compounds">
+<h3 class="cpd_head">Compounds:</h3>
 <ul style='display:block;'>
-<h3>Compounds:</h3>
 {% for chem in chems %}
 <li title={{ chem }}>{{ chem }}</li>
 {% endfor %}
 </ul>
 </div>
-<div class='chart'>
+<div class='breakdown'>
+<div class='chemlist'>
 <h3>Of the compounds isolated from this plant:</h3> 
 {% if flavanoid_count != 0 %}
 <p>{{ flavanoid_count }} are flavanoids</p>
@@ -43,7 +44,10 @@
 {% if acid_count != 0 %}
 <p>{{ acid_count }} are acids</p>
 {% endif %}
-<canvas id='chem_chart' width='256' height='256'></canvas>
+</div>
+<div class='chart'>
+<canvas id='chem_chart'></canvas>
+</div>
 </div>
 <script>
 $(document).ready(function() {

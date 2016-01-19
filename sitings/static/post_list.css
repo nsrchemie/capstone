@@ -42,18 +42,19 @@ div.sitings a{
 	float:right;
 }
 div.Phytoheader {
-	background-color: #0BC67C;
+	background-color: #1B3C2F;
 	display:inline-block;
 	width:100%;
 	border-bottom-style:groove;
-	border-bottom:thick;
+/*	border-bottom:thick;*/
 }
 h1.headtitle {
 	color:white;
 	margin-left: .6em;
 	font-size: 22px;
-	margin-bottom:.9em;
+	margin-bottom:1em;
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	padding-top: .65em;
 }
 #map {
 	width: 86.37em;
