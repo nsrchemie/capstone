@@ -3,7 +3,12 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+<link href="/static/post_detail.css" rel="stylesheet">
+</head>
 <body>
+        <div class="Phytoheader">
+            <h1 class="headtitle">Phytomap</h1>
+        </div>
 <div class="post">
         {% if post.published_date %}
             <div class="date">
@@ -13,11 +18,16 @@
         <h1>{{ post.title }}</h1>
         <p>{{ post.description|linebreaks }}</p>
     </div>
-<ul>{% for chem in chems %}
-<li>{{ chem }}</li>
+<div class="compounds">
+<ul style='display:block;'>
+<h3>Compounds:</h3>
+{% for chem in chems %}
+<li title={{ chem }}>{{ chem }}</li>
 {% endfor %}
-
-<p>Of the compounds isolated from this plant:</p> 
+</ul>
+</div>
+<div class='chart'>
+<h3>Of the compounds isolated from this plant:</h3> 
 {% if flavanoid_count != 0 %}
 <p>{{ flavanoid_count }} are flavanoids</p>
 {% endif %}
@@ -33,8 +43,8 @@
 {% if acid_count != 0 %}
 <p>{{ acid_count }} are acids</p>
 {% endif %}
-</ul>
-<canvas id='chem_chart' width='256' height='256'>
+<canvas id='chem_chart' width='256' height='256'></canvas>
+</div>
 <script>
 $(document).ready(function() {
 	var ctx = $("#chem_chart").get(0).getContext("2d");

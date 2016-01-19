@@ -1,0 +1,44 @@
+* {
+	margin:0;
+	padding:0;
+
+}
+body {
+	background-color:#043131;
+}
+div.Phytoheader {
+	background-color: #0BC67C;
+	display:inline-block;
+	width:100%;
+	border-bottom-style:groove;
+	border-bottom:thick;
+}
+ul{
+     list-style:none;
+}
+div.post {
+	display:block;
+	width:30em;
+}
+div.compounds {
+	width: 30%;
+	background-color: #24242E;
+	color:#BDBDCD;
+	margin-top: 1.5%;
+	margin-left:2%;
+	display:inline-block;
+	padding:.7%;
+
+}
+h1.headtitle {
+	color:white;
+	margin-left: .6em;
+	font-size: 22px;
+	margin-bottom:.9em;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+div.chart {
+	margin-top: 1.5%;
+	vertical-align: top;
+	display:inline-block;'
+}
