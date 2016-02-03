@@ -5,6 +5,8 @@ from .forms import PostForm
 import requests
 from bs4 import BeautifulSoup
 import re
+from unidecode import unidecode as un
+
 
 def post_list(request):
     """
@@ -28,8 +30,7 @@ def post_list(request):
 def post_detail(request, pk):
     """ After clicking a plant siting on the main page send the plant name to a natural products database, 
     scrape the contents and return chemicals found in the plant/mushroom.  Count the chemicals according 
-    to chemical structure by checking suffixes
-    and send the count of compounds to the page to be displayed
+    to chemical structure by checking suffixes and send the count of compounds to the page to be displayed
 
     """
     post = get_object_or_404(Post,pk=pk)
@@ -54,8 +55,8 @@ def post_detail(request, pk):
 
     for chem in cleaned_data:
         if '|' in chem:
-            chem_raw.append(chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].
-            encode('ascii','replace').decode('utf-8', 'ignore').capitalize()) #identify tr elements containing chemicals by the presence of |
+            chem_raw.append((un(chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].
+            capitalize()))) #identify tr elements containing chemicals by the presence of |
             # The | is used to separate chemical synonyms and only one name is wanted so the last one is retrieved
             # Example: compounds = 'Bicyclo[3.1.1.]hept-2-ene,2,6,6-trimethyl | 2-Pinene' ---> result = '2-Pinene'
             # Stray html tags also have to be removed and the encoding and decoding is to avoid the script breaking when greek unicode
