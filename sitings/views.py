@@ -60,11 +60,10 @@ def post_detail(request, pk):
             capitalize())) #identify tr elements containing chemicals by the presence of |
             # The | is used to separate chemical synonyms and only one name is wanted so the last one is retrieved
             # Example: compounds = 'Bicyclo[3.1.1.]hept-2-ene,2,6,6-trimethyl | 2-Pinene' ---> result = '2-Pinene'
-            # Stray html tags also have to be removed and the encoding and decoding is to avoid the script breaking when greek unicode
-            #characters are in a compound (e.g. β-Sitosterol)
     for value in chem_raw:
-        if not re.match(number_cleaner, value): #Remove strings composed of only numbers and dashes
-            chems.append(value)  
+        if not re.match(number_cleaner, value): #Remove strings composed of only numbers and dashe
+            if not value.startswith('['):
+                chems.append(value)  
     for compound in chems: # Check the suffixes and count occurrences
         if compound.endswith(flavonoids):
             flavonoid_count += 1
