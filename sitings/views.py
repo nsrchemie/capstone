@@ -53,17 +53,18 @@ def post_detail(request, pk):
     acid_count = 0
     glycoside_count = 0
 
+
     for chem in cleaned_data:
         if '|' in chem:
-            chem_raw.append((un(chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].
-            capitalize()))) #identify tr elements containing chemicals by the presence of |
+            chem_raw.append((chem.replace('</td>', '').replace('</n>', '').replace('<n>','').strip().split('|')[-1].
+            capitalize())) #identify tr elements containing chemicals by the presence of |
             # The | is used to separate chemical synonyms and only one name is wanted so the last one is retrieved
             # Example: compounds = 'Bicyclo[3.1.1.]hept-2-ene,2,6,6-trimethyl | 2-Pinene' ---> result = '2-Pinene'
             # Stray html tags also have to be removed and the encoding and decoding is to avoid the script breaking when greek unicode
             #characters are in a compound (e.g. β-Sitosterol)
     for value in chem_raw:
         if not re.match(number_cleaner, value): #Remove strings composed of only numbers and dashes
-            chems.append(value)
+            chems.append(value)  
     for compound in chems: # Check the suffixes and count occurrences
         if compound.endswith(flavonoids):
             flavonoid_count += 1
